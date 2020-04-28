@@ -13,7 +13,7 @@ imshow(pic_1);
 
 %%
 %  导入另一张图片
-%  可以显著看到  图片完成了锐化
+%  
 pic_2 = imread('2.jpg');
 pic_2 = rgb2gray(pic_2);
 figure();
@@ -23,18 +23,11 @@ core(pic_2);
 %%
 %  卷积核作用演示
 %  设定卷积核为4*4矩阵  效果是锐化  提高效果
-%  卷积核应当是对每一个点都进行操作才是合理的
 %  哈哈  最终生成了奇怪的结果 emm
 function core(pic_1)
-    core_matrix = [1 1 1
-             1 -7 1
-             1 1 1];
-    core_matrix2 = [-1 -1 -1
-                     -1 9 -1
-                     -1 -1 -1]
-    core_matrix3 = [2 0 0
-                    0 -1 -1
-                    0 0 -1];
+    core_matrix = [-1 -1 -1
+             -1 9 -1
+             -1 -1 -1];
     core_size = 3;
     det = core_size-1;
     [xx, yy] = size(pic_1);
@@ -47,7 +40,7 @@ function core(pic_1)
         for j = 1:1:yy-det
             x_range = i:i+det;
             y_range = j:j+det;
-            res1 = pic_special(x_range, y_range).*core_matrix3;
+            res1 = pic_special(x_range, y_range).*core_matrix;
             res = sum(sum(res1));
             next_pic(i, j) = res;
         end
