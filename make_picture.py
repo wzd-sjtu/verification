@@ -36,9 +36,9 @@ def make_char(number):
     return ''.join(context_text)
 
 #  生成验证码  number 表示有几位验证码的存在
-def make_pic(number):
+def make_pic(number,height,width):
     #  验证按图片的一个对象
-    image = ImageCaptcha()
+    image = ImageCaptcha(width=width,height=height)
     #  利用上文的make_char函数返回随机数序列[a b c d]
     context = make_char(number)
     #  调用库生成验证码图片
@@ -49,10 +49,11 @@ def make_pic(number):
 #  主函数，表示程序从这里开始
 if __name__ == "__main__":
     #  生成图片的数量，可以动态调节
-    pic_number = 20
+    pic_number = 1
     #  验证码里面字符的数量，可以动态调节
-    number_s = 5
-
+    number_s = 1
+    height = 32
+    width = 32
     #  存储在当前目录文件夹image里面，如果没有，就创建一个
     path = './image'
     if not os.path.exists(path):
@@ -63,7 +64,7 @@ if __name__ == "__main__":
         #  时间序列
         now = str(int(time.time()))
         #  利用上文的函数生成的序列以及对应的验证码图片矩阵
-        text,image = make_pic(number_s)
+        text,image = make_pic(number_s,height,width)
         #  文件的名字
         file_name = text+'_'+now+'.png'
         #  按照名字保存在文件夹image里面

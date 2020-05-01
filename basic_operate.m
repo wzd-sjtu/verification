@@ -9,6 +9,7 @@ imshow(pic_1);
 %  将图片进行灰度化  避免颜色对识别造成影响
 pic_1 = rgb2gray(pic_1);
 %  再把图片显示出来
+
 figure();
 imshow(pic_1);
 
