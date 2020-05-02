@@ -6,18 +6,18 @@ import xlwt
 
 def make_pic():
 	img1=Image.new(mode="RGB",size=(32,32),color=(255,255,255))
-	font1 = ImageFont.truetype(font="arial.ttf", size=22)
+	font1 = ImageFont.truetype(font="arial.ttf", size=29)
 	color1=(random.randint(0,255),random.randint(0,255),random.randint(0,255))
 	draw1=ImageDraw.Draw(img1,mode="RGB")
 	#char1=random.choice([chr(random.randint(65,90)),str(random.randint(0,9))])
 	tmp_char=random.randint(0,9)
 	char1 = random.choice(str(tmp_char))
-	draw1.text( [10, 5],char1, color1, font=font1)
+	draw1.text( [8, 0],char1, color1, font=font1)
 
 	return tmp_char,img1
 
-pic_number=100
-path = './image02'
+pic_number=2000
+path = './image03'
 if not os.path.exists(path):
 	os.makedirs(path)
 
@@ -31,6 +31,6 @@ for i in range(pic_number):
 	file_name = str(i) + '.png'
 	#  按照名字保存在文件夹image里面
 	image.save(path + os.path.sep + file_name)
-	worksheet.write(1,i,text)
+	worksheet.write(i,1,text)
 
 workbook.save('label.xls')

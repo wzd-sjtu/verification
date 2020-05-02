@@ -6,9 +6,9 @@ basic_set;
 train_number=100;
 test_number=2000;
 
-label_data=xlsread('label.xls');
+label_data=xlsread('label_complex.xls','B1:B10000');
 
-file_path='image02/';
+file_path='image/';
 %  进行一万次的训练  首先要生成验证码
 data_accuracy=zeros(1,10);
 

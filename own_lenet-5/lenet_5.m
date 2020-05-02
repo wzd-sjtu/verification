@@ -24,7 +24,7 @@
 %c1卷积层
 %  根据卷积核形成六个影像矩阵 这里的卷积核还没有进行变换，所以出现的结果是非常奇怪的
 for i=1:num_c1
-    neure_c1(:,:,i)=tanh(conv_c(img,w_num_c1(:,:,i)+bias_c1(i)));
+    neure_c1(:,:,i)=tanh(conv_c(img,w_num_c1(:,:,i))+bias_c1(i));
     %figure;
     %imshow(neure_c1(:,:,i));
 end
@@ -46,8 +46,12 @@ end
 %  这个是训练矩阵
 %  这里的取均值在初始化时已经完成了考虑emm
 
+%  这里为什么要乘上0？ 因为后面是有加法的，如果不乘0会发生输入无限叠加的惨剧
+neure_c3=neure_c3*0;
+
 for j=1:num_c3
    for i=1:num_s2
+       %  定义好的卷积作用矩阵
       if tablets(i,j)==1
          neure_c3(:,:,j)=neure_c3(:,:,j)+conv_c(neure_s2(:,:,i),w_num_c3(:,:,i,j)); 
       end
@@ -65,6 +69,10 @@ end
 %%
 %  C5层
 %  每一个神经元和前面的所有层连接在一起。一共有120个神经元
+
+%  这里也要进行乘上0的操作
+neure_c5=neure_c5*0;
+%  防止后面不断做加法，出现惨剧，那就没法正常训练了
 for j=1:num_c5
    for i=1:num_s4
       neure_c5(:,:,j)=neure_c5(:,:,j)+conv_c(neure_s4(:,:,i),w_num_c5(:,:,i,j));
@@ -76,6 +84,7 @@ end
 %%
 % 全连接层 connect
 % 其实可以从120层直接连接到输出层的
+% 这里做了一个tmp矩阵来变换一下形状
 tmp_neure_c5=reshape(neure_c5,1,120);
 for i=1:num_connect
     neure_connect(:,:,i)=tmp_neure_c5*w_num_connect(:,i);
@@ -92,7 +101,6 @@ for i=1:num_output
 end
 
 tmp_neure_output=reshape(neure_output,10,1);
-
 
 %%
 
@@ -267,7 +275,7 @@ w_num_c1=w_num_c1-delta_w_c1*learning_rate;
 w_num_s2=w_num_s2-delta_w_s2*learning_rate;
 w_num_c3=w_num_c3-delta_w_c3*learning_rate;
 w_num_s4=w_num_s4-delta_w_s4*learning_rate;
-%  这里的c5权值有一些问题！我去！
+%  貌似权值的更新出现了很大的问题emm  我裂开了！
 w_num_c5=w_num_c5-delta_w_c5*learning_rate;
 w_num_connect=w_num_connect-delta_w_connect*learning_rate;
 w_num_output=w_num_output-delta_w_output*learning_rate;
